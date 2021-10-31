@@ -81,7 +81,7 @@ void peSensor_EstimateTime() {
     if ((peSensor_WIDTH_MIN < pe0_width) && (pe0_width < peSensor_WIDTH_MAX)) {
       if ((peSensor_WIDTH_MIN < pe1_width) && (pe1_width < peSensor_WIDTH_MAX)) {
         // センサ0 - センサ1 間時間
-        unsigned long interval = pe1_fall - pe0_fall;
+        long interval = pe1_fall - pe0_fall;
         if ((peSensor_INTERVAL_MIN < interval) && (interval < peSensor_INTERVAL_MAX)) {
           // 真下に来るまでの残り時間[usec]
           unsigned long usec = (unsigned long)(((360. - peSensor_SENSOR_1_DEG) / peSensor_DIFFDEG) * interval);
