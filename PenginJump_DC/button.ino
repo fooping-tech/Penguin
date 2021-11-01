@@ -1,25 +1,24 @@
 #include "./configuration.h"
 
 void button_Setup() {
-  // TODO スタブのため要実装
+  pinMode(button_STARTSTOP_PIN, INPUT_PULLUP);
+  pinMode(button_PESENSORDISABLE_PIN, INPUT_PULLUP);
+  pinMode(button_FORWARD_PIN, INPUT_PULLUP);
+  pinMode(button_BACKWARD_PIN, INPUT_PULLUP);
 }
 
 boolean button_Forward() {
-  // TODO スタブのため要実装
-  return false;
+  return (digitalRead(button_FORWARD_PIN) == LOW);
 }
 
 boolean button_Backward() {
-  // TODO スタブのため要実装
-  return false;
+  return (digitalRead(button_BACKWARD_PIN) == LOW);
 }
 
 boolean button_StartStop() {
-  // TODO スタブのため要実装
-  return false;
+  return (digitalRead(button_STARTSTOP_PIN) == LOW);
 }
 
 boolean button_PeSensorDisable() {
-  // TODO スタブのため要実装
-  return false;
+  return (digitalRead(button_PESENSORDISABLE_PIN) == LOW);
 }
