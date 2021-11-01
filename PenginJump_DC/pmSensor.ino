@@ -37,7 +37,7 @@ void pmSensor_Falling() {
       } else if (position == POSITION_GEAR_SETED) {
         position = POSITION_JUMP_READY;
       } else if (position == POSITION_JUMP_READY) {
-        position == POSITION_GEAR_UNSETED
+        position == POSITION_GEAR_UNSETED;
       }
     } else {  // 逆転中
       if (position == POSITION_GEAR_UNSETED) {
@@ -45,7 +45,7 @@ void pmSensor_Falling() {
       } else if (position == POSITION_GEAR_SETED) {
         position = POSITION_GEAR_UNSETED;
       } else if (position == POSITION_JUMP_READY) {
-        position == POSITION_GEAR_SETED
+        position == POSITION_GEAR_SETED;
       }
     }
     pmSensor_SetPosition(position);
