@@ -38,13 +38,15 @@ enum pmSensor_POSITION {
 
 //■■■ 加速度センサ設定 設定値 ■■■//
 // ACCEL_SENSOR に設定する選択肢
-#define NO_ACCEL_SENSOR 0   // 加速度センサ未使用時
-#define ADAFRUIT_LSM9DS1 1  // https://www.switch-science.com/catalog/6451/
+#define NO_ACCEL_SENSOR   0   // 加速度センサ未使用時
+#define ADAFRUIT_LSM9DS1  1   // https://www.switch-science.com/catalog/6451/
+#define AE_KXR94_2050     2   // https://akizukidenshi.com/catalog/g/gM-05153/
+#define AE_L3GD20H        3   // https://akizukidenshi.com/catalog/g/gK-15096/
 
 // 加速度センサ種別
 #define ACCEL_SENSOR  NO_ACCEL_SENSOR
-#if ACCEL_SENSOR == ADAFRUIT_LSM9DS1
 
+#if ACCEL_SENSOR != NO_ACCEL_SENSOR
 // センサー値の更新周期[msec]
 const unsigned long accelSensor_INTERVAL = 10;
 
@@ -53,7 +55,6 @@ const int accelSensor_BUFF_SIZE = 5;
 
 // バッファー内の加速度最大最小の差
 const float accelSensor_STABLE_ACCDIFF = 0.2;
-
 #endif
 
 //■■■ ESC(escControl) 設定値 ■■■//
@@ -68,6 +69,12 @@ const int speedController_MIN = 1000;
 // ニュートラル時の指示パルス幅[usec]
 const int speedController_NEUTRAL = (speedController_MAX + speedController_MIN)/2;
 
+
+//■■■ 操作用ボタン設定値 ■■■//
+const int button_STARTSTOP_PIN = 4;
+const int button_PESENSORDISABLE_PIN = 8;
+const int button_FORWARD_PIN = 14;
+const int button_BACKWARD_PIN = 15;
 
 //■■■ デバッグ用ブザー設定値 ■■■//
 // 端子設定
