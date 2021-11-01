@@ -17,7 +17,8 @@ enum Pengin_STATE {
   STATE_JUMPING,    // ジャンプ中
   STATE_LANDING,    // 着地＆安定待ち
   STATE_APPROACH,   // 足を伸ばす
-  STATE_JUMP_READY  // ジャンプ待ち待機(足を伸ばした状態)
+  STATE_JUMP_READY, // ジャンプ待ち待機(足を伸ばした状態)
+  STATE_RETURN_ORIGIN // 原点復帰中
 };
 
 // ペンギンの現在状態
@@ -61,7 +62,7 @@ void setup() {
 
   // ボタン初期化
   button_Setup();
-  
+
 #if ACCEL_SENSOR == ADAFRUIT_LSM9DS1
   //accelSensor_Setup();
 #endif
@@ -71,18 +72,6 @@ void setup() {
 
 void loop() {
   unsigned long now = millis();
-
-  // 停止ボタンが押されている時
-  if (button_Stop()) {
-    PenginJump_SetState(STATE_STOP);
-    
-    // ジャンプの予定はキャンセル
-    PenginJump_isJumpSeted = false;
-    PenginJump_BottomTime = 0;
-    
-    // TODO 原点復帰の実装
-    
-  }
 
   Pengin_STATE state = PenginJump_GetState();
 
@@ -97,8 +86,8 @@ void loop() {
       Serial.println("Backward");
     } else {
       speedController_Stop();
-      // Readyボタン押下時は時間待ち後状態遷移
-      if (button_Ready()) {
+      // StartStopボタン押下時は時間待ち状態へ遷移
+      if (button_StartStop()) {
         if (pmSensor_GetPosition() == POSITION_UNKNOWN) {
           pmSensor_SetPosition(POSITION_JUMP_READY);
         }
@@ -117,10 +106,11 @@ void loop() {
 
   // ジャンプ中の状態
   if (state == STATE_JUMPING) {
-    speedController_Output(100);
     if (pmSensor_GetPosition() == POSITION_GEAR_UNSETED) {
       speedController_Output(10);
       PenginJump_SetState(STATE_LANDING);
+    } else {
+      speedController_Output(100);
     }
   }
 
@@ -153,12 +143,37 @@ void loop() {
       buzzer_Start(); // ブザーを鳴らす
       PenginJump_isJumpSeted = true;
     }
-    
+
     // ジャンプ開始
     if (PenginJump_isJumpSeted && (PenginJump_JumpTime <= now)) {
       PenginJump_isJumpSeted = false;
       PenginJump_SetState(STATE_JUMPING);
     }
+  }
+
+  // 原点復帰状態
+  if (state == STATE_RETURN_ORIGIN) {
+    // ジャンプの予定はキャンセル
+    PenginJump_isJumpSeted = false;
+    PenginJump_BottomTime = 0;
+
+    // 時間待ち(1秒)後に原点復帰を始める
+    if (1000 < PenginJump_StateTime()) {
+      // ギア位置がPOSITION_GEAR_UNSETEDになるまで、ゆっくり逆転させる
+      if (pmSensor_GetPosition() == POSITION_GEAR_UNSETED) {
+        PenginJump_SetState(STATE_STOP);
+      } else {
+        speedController_Output(-10);
+      }
+    } else {
+      speedController_Stop();
+    }
+  }
+
+  // 動作中にStartStopボタンが押されている時は停止＆原点復帰
+  if (state != STATE_STOP && button_StartStop()) {
+    speedController_Stop();
+    PenginJump_SetState(STATE_RETURN_ORIGIN);
   }
 
   // TODO ペンギンが倒れた場合の処理の実装

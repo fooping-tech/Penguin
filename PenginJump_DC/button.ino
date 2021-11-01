@@ -14,12 +14,7 @@ boolean button_Backward() {
   return false;
 }
 
-boolean button_Ready() {
-  // TODO スタブのため要実装
-  return false;
-}
-
-boolean button_Stop() {
+boolean button_StartStop() {
   // TODO スタブのため要実装
   return false;
 }
