@@ -57,6 +57,18 @@ const int accelSensor_BUFF_SIZE = 5;
 const float accelSensor_STABLE_ACCDIFF = 0.2;
 #endif
 
+#if ACCEL_SENSOR == AE_KXR94_2050
+// 端子設定
+#define accelX_PIN A3
+#define accelY_PIN A4
+#define accelZ_PIN A5
+// 最新値を保持するリングバッファ
+volatile float accelSensor_AccelX[accelSensor_BUFF_SIZE];
+volatile float accelSensor_AccelY[accelSensor_BUFF_SIZE];
+volatile float accelSensor_AccelZ[accelSensor_BUFF_SIZE];
+volatile int accelSensor_AccelIndex = 0;
+#endif
+
 //■■■ ESC(escControl) 設定値 ■■■//
 // 端子設定
 const int speedController_PIN = 3;
