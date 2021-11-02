@@ -59,14 +59,16 @@ const float accelSensor_STABLE_ACCDIFF = 0.2;
 
 #if ACCEL_SENSOR == AE_KXR94_2050
 // 端子設定
-#define accelX_PIN A3
-#define accelY_PIN A4
-#define accelZ_PIN A5
-// 最新値を保持するリングバッファ
-volatile float accelSensor_AccelX[accelSensor_BUFF_SIZE];
-volatile float accelSensor_AccelY[accelSensor_BUFF_SIZE];
-volatile float accelSensor_AccelZ[accelSensor_BUFF_SIZE];
-volatile int accelSensor_AccelIndex = 0;
+const int accelSensor_ACCELX_PIN = A3;
+const int accelSensor_ACCELY_PIN = A4;
+const int accelSensor_ACCELZ_PIN = A5;
+
+// センサの電源電圧[V](2.5V～5.25Vで設定)
+const float accelSensor_VDD = 3.3;
+// オフセット電圧(0g時の出力電圧)[V]
+const float accelSensor_VOLT_OFFSET = accelSensor_VDD / 2.;
+// １gあたりの出力振幅[V/g]
+const float accelSensor_SENSITIVITY = accelSensor_VDD / 5.;
 #endif
 
 //■■■ ESC(escControl) 設定値 ■■■//
@@ -93,6 +95,7 @@ const int button_BACKWARD_PIN = 15;
 const int buzzer_PIN = 2;
 
 //■■■ タイマ割り込み設定値 ■■■//
+#if ACCEL_SENSOR == AE_KXR94_2050
 // ハードウェアタイマーの初期化
 #define USING_16MHZ true
 #define USING_8MHZ false
@@ -103,9 +106,6 @@ const int buzzer_PIN = 2;
 #define USE_TIMER_1 true
 #define USE_TIMER_2 false
 #define USE_TIMER_3 false
-
-// タイマーのタイムアウト値
-// ToDo: 暫定値のため要調整
-const unsigned long timer_TIMEOUT = 100000;
+#endif
 
 #endif

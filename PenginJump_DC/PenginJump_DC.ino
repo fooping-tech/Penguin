@@ -63,8 +63,8 @@ void setup() {
   // ボタン初期化
   button_Setup();
 
-#if ACCEL_SENSOR == ADAFRUIT_LSM9DS1
-  //accelSensor_Setup();
+#if ACCEL_SENSOR != NO_ACCEL_SENSOR
+  accelSensor_Setup();
 #endif
 
   Serial.println("setup end");
