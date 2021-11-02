@@ -1,4 +1,8 @@
 #include "./configuration.h"
+
+// ライブラリマネージャーで "megaAVR_TimerInterrupt"を検索してインストール
+// https://github.com/khoih-prog/megaAVR_TimerInterrupt
+// タイマーの設定後インクルードすること（設定はconfiguratin.hに記載）
 #include <megaAVR_TimerInterrupt.h>
 #include <megaAVR_ISR_Timer.h>
 
