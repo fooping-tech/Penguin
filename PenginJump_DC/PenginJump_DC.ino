@@ -98,6 +98,7 @@ void loop() {
 
   // Readyスイッチ押下後の待ち状態
   if (state == STATE_READY) {
+    speedController_Stop();
     // Ready状態で5秒待つ
     if (5000 < PenginJump_StateTime()) {
       PenginJump_SetState(STATE_JUMPING);
@@ -107,7 +108,6 @@ void loop() {
   // ジャンプ中の状態
   if (state == STATE_JUMPING) {
     if (pmSensor_GetPosition() == POSITION_GEAR_UNSETED) {
-      speedController_Output(10);
       PenginJump_SetState(STATE_LANDING);
     } else {
       speedController_Output(100);
@@ -123,20 +123,23 @@ void loop() {
       if (accelSensor_IsStable() || 300 < PenginJump_StateTime()) {
         PenginJump_SetState(STATE_APPROACH);
       }
+    } else {
+      speedController_Output(10);
     }
   }
 
   // 足を伸ばす状態
   if (state == STATE_APPROACH) {
-    speedController_Output(100);
     if (pmSensor_GetPosition() == POSITION_JUMP_READY) {
-      speedController_Stop();
       PenginJump_SetState(STATE_JUMP_READY);
+    } else {
+      speedController_Output(100);
     }
   }
 
   // ジャンプ待ち待機(足を伸ばした状態)状態
   if (state == STATE_JUMP_READY) {
+    speedController_Stop();
     // 光電センサ無効化時
     if (button_PeSensorDisable() && !PenginJump_isJumpSeted) {
       PenginJump_JumpTime = now + 500;  // 500ms後にジャンプ
@@ -170,9 +173,8 @@ void loop() {
     }
   }
 
-  // 動作中にStartStopボタンが押されている時は停止＆原点復帰
+  // 動作中にStartStopボタンが押されている時は原点復帰
   if (state != STATE_STOP && button_StartStop()) {
-    speedController_Stop();
     PenginJump_SetState(STATE_RETURN_ORIGIN);
   }
 
