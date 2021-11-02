@@ -92,4 +92,20 @@ const int button_BACKWARD_PIN = 15;
 // 端子設定
 const int buzzer_PIN = 2;
 
+//■■■ タイマ割り込み設定値 ■■■//
+// ハードウェアタイマーの初期化
+#define USING_16MHZ true
+#define USING_8MHZ false
+#define USING_250KHZ false
+
+// 使用するタイマを設定
+#define USE_TIMER_0 false
+#define USE_TIMER_1 true
+#define USE_TIMER_2 false
+#define USE_TIMER_3 false
+
+// タイマーのタイムアウト値
+// ToDo: 暫定値のため要調整
+const unsigned long timer_TIMEOUT = 100000;
+
 #endif
