@@ -68,6 +68,30 @@ void setup() {
 #endif
 
   Serial.println("setup end");
+
+// ボタンテスト
+//  while(1) {
+//    if (button_Forward()) {
+//      Serial.println("button_Forward");
+//    }
+//    if (button_Backward()) {
+//      Serial.println("button_Backward");
+//    }
+//    if (button_StartStop()) {
+//      Serial.println("button_StartStop");
+//    }
+//    if (button_PeSensorDisable()) {
+//      Serial.println("button_PeSensorDisable");
+//    }
+//    delay(500);
+//  }
+
+// 加速度センサテスト
+//  while(1) {
+//    Serial.println(accelSensor_IsStable());
+//    delay(500);
+//  }
+
 }
 
 void loop() {
@@ -79,10 +103,10 @@ void loop() {
   if (state == STATE_STOP) {
     // 正転/逆転ボタン押下
     if (button_Forward()) {
-      speedController_Output(10);
+      speedController_Output(PenginJump_FORWARD_SLOW);
       Serial.println("Forward");
     } else if (button_Backward()) {
-      speedController_Output(-10);
+      speedController_Output(PenginJump_BACKWARD_SLOW);
       Serial.println("Backward");
     } else {
       speedController_Stop();
