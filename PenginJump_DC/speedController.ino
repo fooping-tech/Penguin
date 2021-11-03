@@ -13,7 +13,7 @@ int speedController_GetSpeed() {
 
 // ESC初期化処理
 void speedController_Setup() {
-  esc.attach(speedController_PIN);
+  esc.attach(speedController_PIN, speedController_MIN, speedController_MAX);
   speedController_Stop();
   delay(1000);
 }
@@ -27,6 +27,9 @@ void speedController_Stop() {
 // モータ出力設定
 // percent: -100～100% で出力指示
 void speedController_Output(int percent) {
+  if (speedController_DIR_INVERSE) {
+    percent = -1 * percent;
+  }
   if (percent < -100) {
     percent = -100;
   }
