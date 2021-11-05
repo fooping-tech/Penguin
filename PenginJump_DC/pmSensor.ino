@@ -7,8 +7,8 @@ unsigned long pmSensor_UpdateTime = 0;
 
 // フォトマイクロセンサ初期化処理
 void pmSensor_Setup() {
-  pinMode(pmSensor_PIN, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(pmSensor_PIN), pmSensor_Falling, FALLING);
+  pinMode(pmSensor_PIN, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pmSensor_PIN), pmSensor_Rising, RISING);
 
   // 電源ON時は位置不明
   pmSensor_Position = POSITION_UNKNOWN;
@@ -27,7 +27,7 @@ pmSensor_POSITION pmSensor_GetPosition() {
   return pmSensor_Position;
 }
 
-void pmSensor_Falling() {
+void pmSensor_Rising() {
   pmSensor_POSITION position = pmSensor_Position;
   if (position != POSITION_UNKNOWN) {
     // 正回転中
