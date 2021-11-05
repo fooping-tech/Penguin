@@ -11,7 +11,7 @@
 // 加速度センサ無しの場合の実装
 #if ACCEL_SENSOR == NO_ACCEL_SENSOR
 boolean accelSensor_IsStable() {
-  return true;
+  return false;
 }
 #endif
 

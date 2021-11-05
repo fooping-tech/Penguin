@@ -14,6 +14,11 @@ void pmSensor_Setup() {
   pmSensor_Position = POSITION_UNKNOWN;
 }
 
+// 隙間に物がある場合はtrue
+boolean pmSensor_GetState() {
+  return (digitalRead(pmSensor_PIN) == HIGH);
+}
+
 void pmSensor_SetPosition(pmSensor_POSITION position) {
   unsigned long now = micros();
   // チャタリング防止のため、1000usec以内の状態変化は無視する

@@ -131,7 +131,8 @@ void loop() {
 
   // ジャンプ中の状態
   if (state == STATE_JUMPING) {
-    if (pmSensor_GetPosition() == POSITION_GEAR_UNSETED) {
+    //if (pmSensor_GetPosition() == POSITION_GEAR_UNSETED) {
+    if (!pmSensor_GetState()) {
       PenginJump_SetState(STATE_LANDING);
     } else {
       speedController_Output(100);
@@ -140,7 +141,8 @@ void loop() {
 
   // 着地＆安定待ち状態
   if (state == STATE_LANDING) {
-    if (pmSensor_GetPosition() == POSITION_GEAR_SETED) {
+    //if (pmSensor_GetPosition() == POSITION_GEAR_SETED) {
+    if (100 < PenginJump_StateTime()) {
       Serial.println("Gear Set");
       speedController_Stop();
       // 着地後安定 又は タイムアウト時は状態遷移
@@ -154,7 +156,8 @@ void loop() {
 
   // 足を伸ばす状態
   if (state == STATE_APPROACH) {
-    if (pmSensor_GetPosition() == POSITION_JUMP_READY) {
+    //if (pmSensor_GetPosition() == POSITION_JUMP_READY) {
+    if (pmSensor_GetState()) {
       PenginJump_SetState(STATE_JUMP_READY);
     } else {
       speedController_Output(100);
