@@ -3,10 +3,10 @@
 
 //■■■ ペンギンジャンプ設定 ■■■//
 // 縄が真下に来るどれぐらい前にジャンプを始めるか[msec]
-const unsigned long PenginJump_JUMP_START_TIME = 100;
+const unsigned long PenginJump_JUMP_START_TIME = 10000;
 
 // ゆっくり正転する際の出力値[%]
-const int PenginJump_FORWARD_SLOW = 50;
+const int PenginJump_FORWARD_SLOW = 80;
 
 // ゆっくり逆転する際の出力値[%]
 const int PenginJump_BACKWARD_SLOW = -20;
@@ -22,25 +22,19 @@ const float peSensor_SENSOR_0_DEG = 250.;
 const float peSensor_SENSOR_1_DEG = 270.;
 
 // 縄検知時のパルス幅最小値[usec]
-const unsigned long peSensor_WIDTH_MIN = 2000;
+const unsigned long peSensor_WIDTH_MIN = 10;
 // 縄検知時のパルス幅最大値[usec]
-const unsigned long peSensor_WIDTH_MAX = 100000;
+const unsigned long peSensor_WIDTH_MAX = 1000000L;
 
 // 縄検知時の光電センサ0→光電センサ1 の間隔時間最小値[usec]
-const long peSensor_INTERVAL_MIN = 1000;
+const long peSensor_INTERVAL_MIN = 1;
 // 縄検知時の光電センサ0→光電センサ1 の間隔時間最大値[usec]
-const long peSensor_INTERVAL_MAX = 1000000;
+const long peSensor_INTERVAL_MAX = 10000000L;
 
 //■■■ フォトマイクロセンサ設定値 ■■■//
 // 端子設定
-const int pmSensor_PIN = 21;
-
-enum pmSensor_POSITION {
-  POSITION_UNKNOWN,       // 位置不明
-  POSITION_GEAR_UNSETED,  // ジャンプ後(ギアかみ合い前)
-  POSITION_GEAR_SETED,    // ジャンプ後(ギアかみ合い後)
-  POSITION_JUMP_READY     // ジャンプ準備完了
-};
+const int pmSensor_PIN0 = 21;
+const int pmSensor_PIN1 = 20;
 
 //■■■ 加速度センサ設定 設定値 ■■■//
 // ACCEL_SENSOR に設定する選択肢
@@ -77,21 +71,21 @@ const float accelSensor_VOLT_OFFSET = accelSensor_VDD / 2.;
 const float accelSensor_SENSITIVITY = accelSensor_VDD / 5.;
 #endif
 
-//■■■ ESC(escControl) 設定値 ■■■//
+//■■■ DCモータ制御PWM 設定値 ■■■//
 // 端子設定
 const int speedController_PIN = 3;
 
-// 指示パルス幅の最大値[usec]
-const int speedController_MAX = 2000;
-// 指示パルス幅の最小値[usec]
-const int speedController_MIN = 1000;
+//// 指示パルス幅の最大値[usec]
+//const int speedController_MAX = 2000;
+//// 指示パルス幅の最小値[usec]
+//const int speedController_MIN = 1000;
+//
+//// ニュートラル時の指示パルス幅[usec]
+//const int speedController_NEUTRAL = (speedController_MAX + speedController_MIN)/2;
 
-// ニュートラル時の指示パルス幅[usec]
-const int speedController_NEUTRAL = (speedController_MAX + speedController_MIN)/2;
-
-// 正転/逆転反転モード(ギア等で向きが逆転する場合true)
-// ※通常は正転で足が伸びる方向
-const boolean speedController_DIR_INVERSE = true;
+//// 正転/逆転反転モード(ギア等で向きが逆転する場合true)
+//// ※通常は正転で足が伸びる方向
+//const boolean speedController_DIR_INVERSE = true;
 
 
 //■■■ 操作用ボタン設定値 ■■■//
@@ -103,6 +97,10 @@ const int button_BACKWARD_PIN = 15;
 //■■■ デバッグ用ブザー設定値 ■■■//
 // 端子設定
 const int buzzer_PIN = 2;
+
+//■■■ ギア位置検出用ポテンショメータ 設定値 ■■■//
+// 端子設定
+const int gearPosition_POTENTIOMETERS_PIN = A5;
 
 //■■■ タイマ割り込み設定値 ■■■//
 #if ACCEL_SENSOR == AE_KXR94_2050
