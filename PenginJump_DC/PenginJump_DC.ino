@@ -39,9 +39,13 @@ volatile unsigned long PenginJump_StateInTime = 0;
 
 // ペンギンの状態を変更する
 void PenginJump_SetState(Pengin_STATE state) {
+  unsigned long now = millis();
   PenginJump_State = state;
-  PenginJump_StateInTime = millis();
-  Serial.print("SetState: ");
+  PenginJump_StateInTime = now;
+  
+  Serial.print("  ");
+  Serial.print(now);
+  Serial.print(": SetState: ");
   Serial.println(Pengin_STATE_STRING[state]);
 }
 
