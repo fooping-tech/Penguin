@@ -43,8 +43,6 @@ void PenginJump_SetState(Pengin_STATE state) {
   PenginJump_StateInTime = millis();
   Serial.print("SetState: ");
   Serial.println(Pengin_STATE_STRING[state]);
-  //Serial.print("Gear Position: ");
-  //Serial.println(gearPosition_GetPosition());
 }
 
 // ペンギンの現在の状態を取得する
@@ -81,56 +79,34 @@ void setup() {
 
   Serial.println("setup end");
 
-  // 入力テスト
-//    while (1) {
-//      if (button_Forward()) {
-//        Serial.println("button_Forward");
-//      }
-//      if (button_Backward()) {
-//        Serial.println("button_Backward");
-//      }
-//      if (button_StartStop()) {
-//        Serial.println("button_StartStop");
-//      }
-//      if (button_PeSensorDisable()) {
-//        Serial.println("button_PeSensorDisable");
-//      }
-//      if (pmSensor_GetState0()) {
-//        Serial.println("PmSensor 0 Detect");
-//      }
-//      if (pmSensor_GetState1()) {
-//        Serial.println("PmSensor 1 Detect");
-//      }
-//      if (digitalRead(peSensor_PIN0) == LOW) {
-//        Serial.println("PeSensor0 Detect");
-//      }
-//      if (digitalRead(peSensor_PIN1) == LOW) {
-//        Serial.println("PeSensor1 Detect");
-//      }
-//      delay(500);
+  // ボタン＆センサの入力テスト
+//  while (1) {
+//    if (button_Forward()) {
+//      Serial.println("button_Forward");
 //    }
-
-  // 加速度センサテスト
-  //  while(1) {
-  //    Serial.println(accelSensor_IsStable());
-  //    delay(500);
-  //  }
-
-  //  // PWM出力テスト
-  //  while (1) {
-  //    speedController_Output(100);
-  //    delay(4000);
-  //    speedController_Output(80);
-  //    delay(5000);
-  //    speedController_Output(0);
-  //    delay(2000);
-  //  }
-
-  // 角度テスト
-  //  while (1) {
-  //    Serial.println(gearPosition_GetPosition());
-  //    delay(200);
-  //  }
+//    if (button_Backward()) {
+//      Serial.println("button_Backward");
+//    }
+//    if (button_StartStop()) {
+//      Serial.println("button_StartStop");
+//    }
+//    if (button_PeSensorDisable()) {
+//      Serial.println("button_PeSensorDisable");
+//    }
+//    if (pmSensor_GetState0()) {
+//      Serial.println("PmSensor 0 Detect");
+//    }
+//    if (pmSensor_GetState1()) {
+//      Serial.println("PmSensor 1 Detect");
+//    }
+//    if (digitalRead(peSensor_PIN0) == LOW) {
+//      Serial.println("PeSensor0 Detect");
+//    }
+//    if (digitalRead(peSensor_PIN1) == LOW) {
+//      Serial.println("PeSensor1 Detect");
+//    }
+//    delay(500);
+//  }
 
   PenginJump_SetState(STATE_STOP);
 }
@@ -172,23 +148,6 @@ void loop() {
 
   // ジャンプ中の状態
   if (state == STATE_JUMPING) {
-    //    float deg = gearPosition_GetPosition();
-    //    // ジャンプ中の狙い角度[deg]
-    //    float const jumpdeg = 210.;
-    //    float diff = jumpdeg - deg;
-    //
-    //    if (0. < diff) {
-    //      //まだ飛んでないと思われる
-    //      int out = (int)(diff * (60./30.));  // 30degずれている場合は60%duty
-    //      speedController_Output(out);
-    //    } else {
-    //      if (200 < PenginJump_StateTime()) {
-    //        speedController_Output(50);
-    //      } else {
-    //        speedController_Stop();
-    //      }
-    //    }
-
     boolean pm0 = pmSensor_GetState0();
     boolean pm1 = pmSensor_GetState1();
     // 上端
@@ -213,8 +172,8 @@ void loop() {
       // 下限にいない場合は、StateTime()をリセットのため同じ状態へ遷移
       PenginJump_SetState(STATE_LANDING);
     }
-    // 着地後安定 又は タイムアウト時は状態遷移
-    if (accelSensor_IsStable() || 300 < PenginJump_StateTime()) {
+    // 着地後安定時は状態遷移
+    if (300 < PenginJump_StateTime()) {
       PenginJump_SetState(STATE_APPROACH);
     }
   }
@@ -233,24 +192,13 @@ void loop() {
         speedController_Output(60);
       }
     }
-    //    float deg = gearPosition_GetPosition();
-    //    // 狙い角度[deg]
-    //    float const appdeg = 220.;
-    //    float diff = appdeg - deg;
-    //    if (0 < diff) {
-    //      int out = (int)(diff * 60/30.);
-    //      speedController_Output(out);
-    //    }
-    //    if (diff < 0) {
-    //      PenginJump_SetState(STATE_JUMP_READY);
-    //    }
   }
 
   // ジャンプ待ち待機(足を伸ばした状態)状態
   if (state == STATE_JUMP_READY) {
     boolean pm0 = pmSensor_GetState0();
     boolean pm1 = pmSensor_GetState1();
-    
+
     // 上端
     if (pm0 && pm1) {
       speedController_Output(0);

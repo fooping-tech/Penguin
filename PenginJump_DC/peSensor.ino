@@ -73,22 +73,20 @@ void peSensor_EstimateTime() {
   unsigned long pe0_rise = peSensor_RisingEdge[0];
   unsigned long pe1_rise = peSensor_RisingEdge[1];
 
-  long p0w = (long)pe0_rise - (long)pe0_fall;
-  long p1w = (long)pe1_rise - (long)pe1_fall;
-  long p01w = (long)pe1_fall - (long)pe0_fall;
-
-  Serial.print(p0w);
-  Serial.print(", ");
-  Serial.print(p1w);
-  Serial.print(", "); 
-  Serial.println(p01w);
+  // パルス幅＆パルス間隔のデバッグ表示
+//  long p0w = (long)pe0_rise - (long)pe0_fall;
+//  long p1w = (long)pe1_rise - (long)pe1_fall;
+//  long p01w = (long)pe1_fall - (long)pe0_fall;
+//  Serial.print(p0w);
+//  Serial.print(", ");
+//  Serial.print(p1w);
+//  Serial.print(", "); 
+//  Serial.println(p01w);
 
   if ((pe0_fall < pe0_rise) && (pe1_fall < pe1_rise) && (pe0_fall < pe1_fall)) {
     // センサ0,1 のパルス幅
     unsigned long pe0_width = pe0_rise - pe0_fall;
     unsigned long pe1_width = pe1_rise - pe1_fall;
-
-    
 
     if ((peSensor_WIDTH_MIN < pe0_width) && (pe0_width < peSensor_WIDTH_MAX)) {
       if ((peSensor_WIDTH_MIN < pe1_width) && (pe1_width < peSensor_WIDTH_MAX)) {

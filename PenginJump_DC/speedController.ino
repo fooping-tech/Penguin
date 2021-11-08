@@ -1,9 +1,9 @@
 #include "./configuration.h"
 
-// 現在設定されているスピード(0% ~ 100%)
+// 現在設定されているスピード(-100% ~ 100%)
 int speedController_Speed = 0;
 
-// 現在設定されているスピード(0% ~ 100%)を返す
+// 現在設定されているスピード(-100% ~ 100%)を返す
 int speedController_GetSpeed() {
   return speedController_Speed;
 }
