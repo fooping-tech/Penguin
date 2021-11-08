@@ -248,17 +248,24 @@ void loop() {
 
   // ジャンプ待ち待機(足を伸ばした状態)状態
   if (state == STATE_JUMP_READY) {
-    speedController_Output(15);
-    //    float deg = gearPosition_GetPosition();
-    //    // 狙い角度[deg]
-    //    float const readydeg = 220.;
-    //    float diff = readydeg - deg;
-    //    if (10 < diff) {
-    //      int out = (int)(diff * 20./10.);  // 10deg で 20%duty
-    //      speedController_Output(out);
-    //    }
-
-    // Jump Readyで下端に言った場合は、アプローチにしたほうがよいかも；
+    boolean pm0 = pmSensor_GetState0();
+    boolean pm1 = pmSensor_GetState1();
+    
+    // 上端
+    if (pm0 && pm1) {
+      speedController_Output(0);
+    }
+    // 狙い停止位置の場合は、位置保持相当の出力
+    if (pm0 && !pm1) {
+      speedController_Output(10);
+    }
+    if (!pm0 && !pm1) {
+      speedController_Output(30);
+    }
+    // Jump Readyで回転しすぎて下端まで落ちた場合は、STATE_APPROACHからやり直す
+    if (!pm0 && pm1) {
+      PenginJump_SetState(STATE_APPROACH);
+    }
 
     // 光電センサ無効化時
     if (button_PeSensorDisable() && !PenginJump_isJumpSeted) {
