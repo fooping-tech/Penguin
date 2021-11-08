@@ -19,27 +19,32 @@ void speedController_Stop() {
 }
 
 // モータ出力設定
-// percent: 0～100% で出力指示
+// percent: -100～100% で出力指示
 void speedController_Output(int percent) {
-//  if (speedController_DIR_INVERSE) {
-//    percent = -1 * percent;
-//  }
-  if (percent < 0) {
-    percent = 0;
+  if (speedController_DIR_INVERSE) {
+    percent = -1 * percent;
+  }
+  if (percent < -100) {
+    percent = -100;
   }
   if (100 < percent) {
     percent = 100;
   }
   speedController_Speed = percent;
-  int pwm = (int)(256./100. * (float)percent);
-  analogWrite(speedController_PIN, pwm);
-  
-//  if (speedController_Speed <= 0) {
-//    digitalWrite(speedController_PIN, LOW);
-//  } else {
-//    digitalWrite(speedController_PIN, HIGH);
-//  }
-//  const float k = ((float)speedController_MAX - (float)speedController_MIN)/200.;
-//  int pulseTime = (int)(k * ((float)percent + 100.)) + speedController_MIN;
-//  esc.writeMicroseconds(pulseTime);
+
+  float abs_percent = abs(percent);
+  int pwm = 256 - (int)(256. / 100. * (float)abs_percent);
+
+  if (percent == 0) {
+    analogWrite(speedController_RPWM_PIN, 256);
+    analogWrite(speedController_LPWM_PIN, 256);
+  }
+  if (percent < 0) {
+    analogWrite(speedController_RPWM_PIN, pwm);
+    analogWrite(speedController_LPWM_PIN, 256);
+  }
+  if (0 < percent) {
+    analogWrite(speedController_RPWM_PIN, 256);
+    analogWrite(speedController_LPWM_PIN, pwm);
+  }
 }

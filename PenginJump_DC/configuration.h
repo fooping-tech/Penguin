@@ -18,8 +18,8 @@ const int peSensor_PIN1 = 12;
 
 // 光電センサ0,1の取り付け角度[deg] ※真下を0degとして反時計周りの角度
 // 0 < peSensor_SENSOR_0_DEG < peSensor_SENSOR_1_DEG < 360 となるように設定
-const float peSensor_SENSOR_0_DEG = 250.;
-const float peSensor_SENSOR_1_DEG = 270.;
+const float peSensor_SENSOR_0_DEG = (180. - 16.5);
+const float peSensor_SENSOR_1_DEG = 180.;
 
 // 縄検知時のパルス幅最小値[usec]
 const unsigned long peSensor_WIDTH_MIN = 10;
@@ -73,7 +73,8 @@ const float accelSensor_SENSITIVITY = accelSensor_VDD / 5.;
 
 //■■■ DCモータ制御PWM 設定値 ■■■//
 // 端子設定
-const int speedController_PIN = 3;
+const int speedController_RPWM_PIN = 3;
+const int speedController_LPWM_PIN = 9;
 
 //// 指示パルス幅の最大値[usec]
 //const int speedController_MAX = 2000;
@@ -85,7 +86,7 @@ const int speedController_PIN = 3;
 
 //// 正転/逆転反転モード(ギア等で向きが逆転する場合true)
 //// ※通常は正転で足が伸びる方向
-//const boolean speedController_DIR_INVERSE = true;
+const boolean speedController_DIR_INVERSE = false;
 
 
 //■■■ 操作用ボタン設定値 ■■■//

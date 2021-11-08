@@ -82,33 +82,33 @@ void setup() {
   Serial.println("setup end");
 
   // 入力テスト
-  //  while (1) {
-  //    if (button_Forward()) {
-  //      Serial.println("button_Forward");
-  //    }
-  //    if (button_Backward()) {
-  //      Serial.println("button_Backward");
-  //    }
-  //    if (button_StartStop()) {
-  //      Serial.println("button_StartStop");
-  //    }
-  //    if (button_PeSensorDisable()) {
-  //      Serial.println("button_PeSensorDisable");
-  //    }
-  //    if (pmSensor_GetState0()) {
-  //      Serial.println("PmSensor 0 Detect");
-  //    }
-  //    if (pmSensor_GetState1()) {
-  //      Serial.println("PmSensor 1 Detect");
-  //    }
-  //    if (digitalRead(peSensor_PIN0) == LOW) {
-  //      Serial.println("PeSensor0 Detect");
-  //    }
-  //    if (digitalRead(peSensor_PIN1) == LOW) {
-  //      Serial.println("PeSensor1 Detect");
-  //    }
-  //    delay(500);
-  //  }
+//    while (1) {
+//      if (button_Forward()) {
+//        Serial.println("button_Forward");
+//      }
+//      if (button_Backward()) {
+//        Serial.println("button_Backward");
+//      }
+//      if (button_StartStop()) {
+//        Serial.println("button_StartStop");
+//      }
+//      if (button_PeSensorDisable()) {
+//        Serial.println("button_PeSensorDisable");
+//      }
+//      if (pmSensor_GetState0()) {
+//        Serial.println("PmSensor 0 Detect");
+//      }
+//      if (pmSensor_GetState1()) {
+//        Serial.println("PmSensor 1 Detect");
+//      }
+//      if (digitalRead(peSensor_PIN0) == LOW) {
+//        Serial.println("PeSensor0 Detect");
+//      }
+//      if (digitalRead(peSensor_PIN1) == LOW) {
+//        Serial.println("PeSensor1 Detect");
+//      }
+//      delay(500);
+//    }
 
   // 加速度センサテスト
   //  while(1) {
@@ -144,12 +144,12 @@ void loop() {
   if (state == STATE_STOP) {
     // 正転/逆転ボタン押下
     if (button_Forward()) {
+      Serial.println("Forward: ");
       speedController_Output(PenginJump_FORWARD_SLOW);
-      Serial.print("Forward: ");
       //Serial.println(gearPosition_GetPosition());
     } else if (button_Backward()) {
+      Serial.println("Backward: ");
       speedController_Output(PenginJump_BACKWARD_SLOW);
-      Serial.print("Backward: ");
       //Serial.println(gearPosition_GetPosition());
     } else {
       speedController_Stop();
@@ -257,6 +257,8 @@ void loop() {
     //      int out = (int)(diff * 20./10.);  // 10deg で 20%duty
     //      speedController_Output(out);
     //    }
+
+    // Jump Readyで下端に言った場合は、アプローチにしたほうがよいかも；
 
     // 光電センサ無効化時
     if (button_PeSensorDisable() && !PenginJump_isJumpSeted) {
