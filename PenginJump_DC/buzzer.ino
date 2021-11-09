@@ -27,8 +27,10 @@ void buzzer_Setup() {
 
 // ブザーを鳴らし始める
 void buzzer_Start() {
-  buzzer_StartTime = millis();
-  buzzer_State = true;
+  if (!buzzer_GetState()) {
+    buzzer_StartTime = millis();
+    buzzer_State = true;
+  }
   digitalWrite(buzzer_PIN, HIGH);
 }
 
