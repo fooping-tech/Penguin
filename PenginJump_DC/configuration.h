@@ -3,7 +3,7 @@
 
 //■■■ ペンギンジャンプ設定 ■■■//
 // 縄が真下に来るどれぐらい前にジャンプを始めるか[msec]
-const unsigned long PenginJump_JUMP_START_TIME = 10000;
+const unsigned long PenginJump_JUMP_START_TIME = 300;
 
 // ゆっくり正転する際の出力値[%]
 const int PenginJump_FORWARD_SLOW = 80;
