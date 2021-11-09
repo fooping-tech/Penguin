@@ -94,7 +94,11 @@ void peSensor_EstimateTime() {
         long interval = pe1_fall - pe0_fall;
         if ((peSensor_INTERVAL_MIN < interval) && (interval < peSensor_INTERVAL_MAX)) {
           // 真下に来るまでの残り時間[usec]
-          unsigned long usec = (unsigned long)(((360. - peSensor_SENSOR_1_DEG) / peSensor_DIFFDEG) * interval);
+          unsigned long usec = (unsigned long)(((360. - peSensor_SENSOR_1_DEG) / peSensor_DIFFDEG) * (float)interval);
+          // 途中加速分を短くする
+          usec -= 200000;
+          Serial.print("rope: ");
+          Serial.println(usec);
           peSensor_RisingEdge[0] = 0;
           peSensor_RisingEdge[1] = 0;
           peSensor_FallingEdge[0] = 0;
