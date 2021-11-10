@@ -3,7 +3,7 @@
 
 //■■■ ペンギンジャンプ設定 ■■■//
 // 縄が真下に来るどれぐらい前にジャンプを始めるか[msec]
-const unsigned long PenginJump_JUMP_START_TIME = 300;
+const unsigned long PenginJump_JUMP_START_TIME = 230;
 
 // ゆっくり正転する際の出力値[%]
 const int PenginJump_FORWARD_SLOW = 80;
@@ -54,7 +54,8 @@ const int button_BACKWARD_PIN = 15;
 
 //■■■ デバッグ用ブザー設定値 ■■■//
 // 端子設定
-const int buzzer_PIN = 2;
+//const int buzzer_PIN = 2;
+const int buzzer_PIN = 5; // 高速カメラ用LED出力時
 
 //■■■ ギア位置検出用ポテンショメータ 設定値 ■■■//
 // 端子設定

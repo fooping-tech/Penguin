@@ -94,9 +94,24 @@ void peSensor_EstimateTime() {
         long interval = pe1_fall - pe0_fall;
         if ((peSensor_INTERVAL_MIN < interval) && (interval < peSensor_INTERVAL_MAX)) {
           // 真下に来るまでの残り時間[usec]
-          unsigned long usec = (unsigned long)(((360. - peSensor_SENSOR_1_DEG) / peSensor_DIFFDEG) * (float)interval);
-          // 途中加速分を短くする
-          usec -= 200000;
+          unsigned long usec;
+
+          // 最後にジャンプしてから2秒以上経過している場合は、初回ジャンプ
+          if (2000 < micros() - PenginJump_GetLastJumpTime()) {
+            usec = 460000;
+          } else {
+            // 180度回転時間[usec/180deg]
+            float t180 = 180. / peSensor_DIFFDEG * (float)interval;
+            // 線形補間  460000[usec/180deg] ⇒ 400000[usec], 500000[usec/180deg] ⇒ 460000[usec]
+            const float x1 = 460000.;
+            const float y1 = 400000.;
+            const float x2 = 500000.;
+            const float y2 = 460000.;
+            usec = (unsigned long)((y2 - y1) / (x2 - x1) * (t180 - x1) + y1);
+          }
+          if (600000 < usec) {
+            usec = 600000;
+          }
           Serial.print("rope: ");
           Serial.println(usec);
           peSensor_RisingEdge[0] = 0;

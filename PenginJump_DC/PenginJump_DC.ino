@@ -10,6 +10,11 @@ volatile unsigned long PenginJump_JumpTime = 0;
 // 縄が真下にくる時刻[msec]
 volatile unsigned long PenginJump_BottomTime = 0;
 
+// 最後にジャンプした時刻[msec]
+volatile unsigned long PenginJump_LastJumpTime = 0;
+
+
+
 // ペンギンの状態を表す型
 enum Pengin_STATE {
   STATE_STOP = 0,         // 停止状態
@@ -57,6 +62,11 @@ Pengin_STATE PenginJump_GetState() {
 // 現在の状態に入ってからの経過時間[msec]
 unsigned long PenginJump_StateTime() {
   return millis() - PenginJump_StateInTime;
+}
+
+// 最後にジャンプした時刻[msec]
+unsigned long PenginJump_GetLastJumpTime() {
+  return PenginJump_LastJumpTime;
 }
 
 void setup() {
@@ -112,6 +122,19 @@ void setup() {
 //    delay(500);
 //  }
 
+  // ブザーテスト
+//  while (1) {
+//    if (button_Forward()) {
+//      Serial.println("buzzer_Start");
+//      buzzer_Start();
+//    }
+//    if (100 < buzzer_GetBuzzerTime()) {
+//      buzzer_Stop();
+//      Serial.println("buzzer_Stop");
+//    }
+//    delay(10);
+//  }
+
   PenginJump_SetState(STATE_STOP);
 }
 
@@ -124,11 +147,11 @@ void loop() {
   if (state == STATE_STOP) {
     // 正転/逆転ボタン押下
     if (button_Forward()) {
-      Serial.println("Forward: ");
+      //Serial.println("Forward: ");
       speedController_Output(PenginJump_FORWARD_SLOW);
       //Serial.println(gearPosition_GetPosition());
     } else if (button_Backward()) {
-      Serial.println("Backward: ");
+      //Serial.println("Backward: ");
       speedController_Output(PenginJump_BACKWARD_SLOW);
       //Serial.println(gearPosition_GetPosition());
     } else {
@@ -185,13 +208,16 @@ void loop() {
   // 足を伸ばす状態
   if (state == STATE_APPROACH) {
     if (pmSensor_GetState0()) {
-      PenginJump_SetState(STATE_JUMP_READY);
+      speedController_Output(-20);
+      if (10 < pmSensor_GetOnTime0()) {
+        PenginJump_SetState(STATE_JUMP_READY);
+      }
     } else {
       // ギア噛み始めは少しゆっくり
-      if (PenginJump_StateTime() < 50) {
+      if (PenginJump_StateTime() < 20) {
         speedController_Output(60);
-      } else if (PenginJump_StateTime() < 100) {
-        speedController_Output(90);
+      } else if (PenginJump_StateTime() < 150) {
+        speedController_Output(100);
       } else {
         speedController_Output(60);
       }
@@ -230,6 +256,7 @@ void loop() {
     if (PenginJump_isJumpSeted && (PenginJump_JumpTime <= now)) {
       PenginJump_isJumpSeted = false;
       PenginJump_SetState(STATE_JUMPING);
+      PenginJump_LastJumpTime = now;
     }
   }
 
