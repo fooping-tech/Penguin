@@ -18,7 +18,3 @@ boolean button_Backward() {
 boolean button_StartStop() {
   return (digitalRead(button_STARTSTOP_PIN) == LOW);
 }
-
-boolean button_PeSensorDisable() {
-  return (digitalRead(button_PESENSORDISABLE_PIN) == LOW);
-}

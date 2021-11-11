@@ -245,13 +245,6 @@ void loop() {
       PenginJump_SetState(STATE_APPROACH);
     }
 
-    // 光電センサ無効化時
-    if (button_PeSensorDisable() && !PenginJump_isJumpSeted) {
-      PenginJump_JumpTime = now + 500;  // 500ms後にジャンプ
-      buzzer_Start(); // ブザーを鳴らす
-      PenginJump_isJumpSeted = true;
-    }
-
     // ジャンプ開始
     if (PenginJump_isJumpSeted && (PenginJump_JumpTime <= now)) {
       PenginJump_isJumpSeted = false;

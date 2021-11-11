@@ -59,7 +59,7 @@ void peSensor_Change(int no) {
   } else {
     // 立上り時
     peSensor_RisingEdge[no] = now;
-    if (no == 1) {
+    if (no == 1) { // センサ1の立ち上がり時
       // 縄が真下に来るの時刻の推定
       peSensor_EstimateTime();
     }
@@ -68,59 +68,32 @@ void peSensor_Change(int no) {
 
 // 縄が真下に来るの時刻の推定
 void peSensor_EstimateTime() {
-  unsigned long pe0_fall = peSensor_FallingEdge[0];
   unsigned long pe1_fall = peSensor_FallingEdge[1];
-  unsigned long pe0_rise = peSensor_RisingEdge[0];
   unsigned long pe1_rise = peSensor_RisingEdge[1];
 
   // パルス幅＆パルス間隔のデバッグ表示
-//  long p0w = (long)pe0_rise - (long)pe0_fall;
-//  long p1w = (long)pe1_rise - (long)pe1_fall;
-//  long p01w = (long)pe1_fall - (long)pe0_fall;
-//  Serial.print(p0w);
-//  Serial.print(", ");
-//  Serial.print(p1w);
-//  Serial.print(", "); 
-//  Serial.println(p01w);
+//    long p1w = (long)pe1_rise - (long)pe1_fall;
+//    Serial.print(p1w);
 
-  if ((pe0_fall < pe0_rise) && (pe1_fall < pe1_rise) && (pe0_fall < pe1_fall)) {
-    // センサ0,1 のパルス幅
-    unsigned long pe0_width = pe0_rise - pe0_fall;
+  if ((pe1_fall < pe1_rise)) {
+    // センサ1 のパルス幅
     unsigned long pe1_width = pe1_rise - pe1_fall;
 
-    if ((peSensor_WIDTH_MIN < pe0_width) && (pe0_width < peSensor_WIDTH_MAX)) {
-      if ((peSensor_WIDTH_MIN < pe1_width) && (pe1_width < peSensor_WIDTH_MAX)) {
-        // センサ0 - センサ1 間時間
-        long interval = pe1_fall - pe0_fall;
-        if ((peSensor_INTERVAL_MIN < interval) && (interval < peSensor_INTERVAL_MAX)) {
-          // 真下に来るまでの残り時間[usec]
-          unsigned long usec;
+    if ((peSensor_WIDTH_MIN < pe1_width) && (pe1_width < peSensor_WIDTH_MAX)) {
+      // 真下に来るまでの残り時間[usec]
+      unsigned long usec;
 
-          // 最後にジャンプしてから2秒以上経過している場合は、初回ジャンプ
-          if (2000 < micros() - PenginJump_GetLastJumpTime()) {
-            usec = 460000;
-          } else {
-            // 180度回転時間[usec/180deg]
-            float t180 = 180. / peSensor_DIFFDEG * (float)interval;
-            // 線形補間  460000[usec/180deg] ⇒ 400000[usec], 500000[usec/180deg] ⇒ 460000[usec]
-            const float x1 = 460000.;
-            const float y1 = 400000.;
-            const float x2 = 500000.;
-            const float y2 = 460000.;
-            usec = (unsigned long)((y2 - y1) / (x2 - x1) * (t180 - x1) + y1);
-          }
-          if (600000 < usec) {
-            usec = 600000;
-          }
-          Serial.print("rope: ");
-          Serial.println(usec);
-          peSensor_RisingEdge[0] = 0;
-          peSensor_RisingEdge[1] = 0;
-          peSensor_FallingEdge[0] = 0;
-          peSensor_FallingEdge[1] = 0;
-          updateBottomTime((usec + pe1_fall)/1000);
-        }
+      // 最後にジャンプしてから2秒以上経過している場合は、初回ジャンプ
+      if (2000 < micros() - PenginJump_GetLastJumpTime()) {
+        usec = 460000;
+      } else {
+        usec = 400000;
       }
+      peSensor_RisingEdge[0] = 0;
+      peSensor_RisingEdge[1] = 0;
+      peSensor_FallingEdge[0] = 0;
+      peSensor_FallingEdge[1] = 0;
+      updateBottomTime((usec + pe1_fall) / 1000);
     }
   }
 }
