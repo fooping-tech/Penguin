@@ -84,7 +84,7 @@ void peSensor_EstimateTime() {
       unsigned long usec;
 
       // 最後にジャンプしてから2秒以上経過している場合は、初回ジャンプ
-      if (2000 < micros() - PenginJump_GetLastJumpTime()) {
+      if (2000 < millis() - PenginJump_GetLastJumpTime()) {
         usec = 460000;
       } else {
         usec = 400000;
