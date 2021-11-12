@@ -24,7 +24,7 @@ const float peSensor_SENSOR_1_DEG = 180.;
 // 縄検知時のパルス幅最小値[usec]
 const unsigned long peSensor_WIDTH_MIN = 10;
 // 縄検知時のパルス幅最大値[usec]
-const unsigned long peSensor_WIDTH_MAX = 1000000L;
+const unsigned long peSensor_WIDTH_MAX = 200000;
 
 // 縄検知時の光電センサ0→光電センサ1 の間隔時間最小値[usec]
 const long peSensor_INTERVAL_MIN = 1;
