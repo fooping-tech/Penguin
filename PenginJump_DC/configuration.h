@@ -3,13 +3,13 @@
 
 //■■■ ペンギンジャンプ設定 ■■■//
 // 縄が真下に来るどれぐらい前にジャンプを始めるか[msec]
-const unsigned long PenginJump_JUMP_START_TIME = 230;
+const unsigned long PenginJump_JUMP_START_TIME = 230;//230ms
 
 // ゆっくり正転する際の出力値[%]
-const int PenginJump_FORWARD_SLOW = 80;
+const int PenginJump_FORWARD_SLOW = 100;//80
 
 // ゆっくり逆転する際の出力値[%]
-const int PenginJump_BACKWARD_SLOW = -20;
+const int PenginJump_BACKWARD_SLOW = -100;//-20
 
 //■■■ 光電センサ設定値 ■■■//
 // 端子設定
@@ -47,7 +47,7 @@ const boolean speedController_DIR_INVERSE = false;
 
 
 //■■■ 操作用ボタン設定値 ■■■//
-const int button_STARTSTOP_PIN = 4;
+const int button_STARTSTOP_PIN = 5;//4->5
 const int button_PESENSORDISABLE_PIN = 8;
 const int button_FORWARD_PIN = 14;
 const int button_BACKWARD_PIN = 15;

@@ -91,7 +91,7 @@ void setup() {
   accelSensor_Setup();
 #endif
 
-  Serial.println("setup end");
+  Serial.println("setup end_v0.0");
 
   // ボタン＆センサの入力テスト
 //  while (1) {
@@ -179,12 +179,12 @@ void loop() {
     boolean pm1 = pmSensor_GetState1();
     // 上端
     if (pm0 && pm1) {
-      // ゆっくり上げる
-      speedController_Output(60);
+      // ゆっくり上げる（上げすぎるとギア外れて落下中にぶつかるリスク。下げすぎると登れない）
+      speedController_Output(85);//duty from 60 motor change
     }
     // ギア噛み外れ直前位置
     if (pm0 && !pm1) {
-      speedController_Output(80);
+      speedController_Output(80);//duty from 80 motor change
     }
     // 足引き寄せ中 or 下端
     if ((!pm0 && !pm1) || (!pm0 && pm1)) {
@@ -200,11 +200,10 @@ void loop() {
       PenginJump_SetState(STATE_LANDING);
     }
     // 着地後安定時は状態遷移
-    if (300 < PenginJump_StateTime()) {
+    if (150 < PenginJump_StateTime()) { //change time wait time from 300
       PenginJump_SetState(STATE_APPROACH);
     }
   }
-
   // 足を伸ばす状態
   if (state == STATE_APPROACH) {
     if (pmSensor_GetState0()) {
@@ -219,7 +218,7 @@ void loop() {
       } else if (PenginJump_StateTime() < 150) {
         speedController_Output(100);
       } else {
-        speedController_Output(60);
+        speedController_Output(60);//change from 60 by motor change//tyu-ning
       }
     }
   }
@@ -238,7 +237,7 @@ void loop() {
       speedController_Output(10);
     }
     if (!pm0 && !pm1) {
-      speedController_Output(30);
+      speedController_Output(50);
     }
     // Jump Readyで回転しすぎて下端まで落ちた場合は、STATE_APPROACHからやり直す
     if (!pm0 && pm1) {
@@ -297,6 +296,8 @@ void loop() {
 void updateBottomTime(unsigned long btime) {
   PenginJump_BottomTime = btime;
   PenginJump_JumpTime = btime - PenginJump_JUMP_START_TIME;
-  PenginJump_isJumpSeted = true;
+  if(millis() - PenginJump_GetLastJumpTime()>10){
+      PenginJump_isJumpSeted = true;
+  }
   Serial.println("Jump Time Seted");
 }
