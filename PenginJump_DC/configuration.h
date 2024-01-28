@@ -38,8 +38,8 @@ const int pmSensor_PIN1 = 20;
 
 //■■■ DCモータ制御PWM 設定値 ■■■//
 // 端子設定
-const int speedController_RPWM_PIN = 3;
-const int speedController_LPWM_PIN = 9;
+const int speedController_RPWM_PIN = 9;
+const int speedController_LPWM_PIN = 3;
 
 // 正転/逆転反転モード(ギア等で向きが逆転する場合true)
 // ※通常は正転で足が伸びる方向
