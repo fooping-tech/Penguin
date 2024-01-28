@@ -4,16 +4,15 @@
 //■■■ ペンギンジャンプ設定 ■■■//
 // 縄が真下に来るどれぐらい前にジャンプを始めるか[msec]
 const unsigned long PenginJump_JUMP_START_TIME = 230;//230ms
-//光センサ検出後 初回ジャンプ待ち時間[us]
+//光センサ検出後 ボトム予測時間(初回)[us]
 const unsigned long peSensor_CALC_WAITTIME =410000;
-//光センサ検出後 2回以降ジャンプ待ち時間[us]
+//光センサ検出後 ボトム予測時間(2回以降)[us]
 const unsigned long peSensor_CALC_WAITTIME2 =350000;
 
-// ゆっくり正転する際の出力値[%]
-const int PenginJump_FORWARD_SLOW = 100;//80
-
-// ゆっくり逆転する際の出力値[%]
-const int PenginJump_BACKWARD_SLOW = -100;//-20
+// Button操作_ゆっくり正転する際の出力値[%]
+const int PenginJump_FORWARD_SLOW = 100;
+// Button操作_ゆっくり逆転する際の出力値[%]
+const int PenginJump_BACKWARD_SLOW = -100;
 
 // ジャンプ上端まで登る際の出力値[%] （上げすぎるとギア外れて落下中にぶつかるリスク。下げすぎると登れない）
 const int PenginJump_JUMPING_RISE = 85;
