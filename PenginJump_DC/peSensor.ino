@@ -85,9 +85,9 @@ void peSensor_EstimateTime() {
 
       // 最後にジャンプしてから2秒以上経過している場合は、初回ジャンプ
       if (2000 < millis() - PenginJump_GetLastJumpTime()) {
-        usec = 410000;//460ms
+        usec = peSensor_CALC_WAITTIME;
       } else {
-        usec = 350000;//400ms
+        usec = peSensor_CALC_WAITTIME2;
       }
       peSensor_RisingEdge[0] = 0;
       peSensor_RisingEdge[1] = 0;

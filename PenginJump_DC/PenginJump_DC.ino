@@ -134,7 +134,8 @@ void setup() {
 //    }
 //    delay(10);
 //  }
-
+  //LED点灯
+  buzzer_Start();
   PenginJump_SetState(STATE_STOP);
 }
 
@@ -167,8 +168,8 @@ void loop() {
   // Readyスイッチ押下後の待ち状態
   if (state == STATE_READY) {
     speedController_Stop();
-    // Ready状態で3秒待つ
-    if (3000 < PenginJump_StateTime()) {
+    // Ready状態で**m秒待つ
+    if (PenginJump_READY_TIME < PenginJump_StateTime()) {
       PenginJump_SetState(STATE_JUMPING);
     }
   }
@@ -179,12 +180,12 @@ void loop() {
     boolean pm1 = pmSensor_GetState1();
     // 上端
     if (pm0 && pm1) {
-      // ゆっくり上げる（上げすぎるとギア外れて落下中にぶつかるリスク。下げすぎると登れない）
-      speedController_Output(85);//duty from 60 motor change
+      // ゆっくり上げる
+      speedController_Output(PenginJump_JUMPING_RISE);
     }
     // ギア噛み外れ直前位置
     if (pm0 && !pm1) {
-      speedController_Output(80);//duty from 80 motor change
+      speedController_Output(PenginJump_JUMPING_RISE_SLOW);
     }
     // 足引き寄せ中 or 下端
     if ((!pm0 && !pm1) || (!pm0 && pm1)) {
@@ -200,25 +201,26 @@ void loop() {
       PenginJump_SetState(STATE_LANDING);
     }
     // 着地後安定時は状態遷移
-    if (150 < PenginJump_StateTime()) { //change time wait time from 300
+    if (PenginJump_LANDING_TIME < PenginJump_StateTime()) {
       PenginJump_SetState(STATE_APPROACH);
     }
   }
+
   // 足を伸ばす状態
   if (state == STATE_APPROACH) {
-    if (pmSensor_GetState0()) {
-      speedController_Output(-20);
-      if (10 < pmSensor_GetOnTime0()) {
+    if (pmSensor_GetState0()) {//上端ブレーキ
+      speedController_Output(PenginJump_APPROACH_BRAKE_DUTY);
+      if (PenginJump_APPROACH_BRAKE_TIME  < pmSensor_GetOnTime0()) {//ブレーキ継続時間
         PenginJump_SetState(STATE_JUMP_READY);
       }
     } else {
       // ギア噛み始めは少しゆっくり
-      if (PenginJump_StateTime() < 20) {
-        speedController_Output(60);
-      } else if (PenginJump_StateTime() < 150) {
-        speedController_Output(100);
-      } else {
-        speedController_Output(60);//change from 60 by motor change//tyu-ning
+      if (PenginJump_StateTime() < PenginJump_APPROACH_TIME1) {//かみ始め
+        speedController_Output(PenginJump_APPROACH_DUTY1);
+      } else if (PenginJump_StateTime() < PenginJump_APPROACH_TIME2) {//途中
+        speedController_Output(PenginJump_APPROACH_DUTY2);
+      } else { //上端近づくとき
+        speedController_Output(PenginJump_APPROACH_DUTY3);
       }
     }
   }
@@ -230,14 +232,14 @@ void loop() {
 
     // 上端
     if (pm0 && pm1) {
-      speedController_Output(0);
+      speedController_Output(PenginJump_JUMP_READY_DUTY1);
     }
     // 狙い停止位置の場合は、位置保持相当の出力
     if (pm0 && !pm1) {
-      speedController_Output(10);
+      speedController_Output(PenginJump_JUMP_READY_DUTY2);
     }
     if (!pm0 && !pm1) {
-      speedController_Output(50);
+      speedController_Output(PenginJump_JUMP_READY_DUTY3);
     }
     // Jump Readyで回転しすぎて下端まで落ちた場合は、STATE_APPROACHからやり直す
     if (!pm0 && pm1) {
@@ -278,6 +280,7 @@ void loop() {
 
   // TODO ペンギンが倒れた場合の処理の実装
 
+  /*
   // 縄が真下にくる時刻が設定されていて、その時刻になった場合ブザーを鳴らす
   if (PenginJump_BottomTime != 0 && PenginJump_BottomTime <= now) {
     PenginJump_BottomTime = 0;
@@ -288,6 +291,7 @@ void loop() {
   if (buzzer_GetState() && (100 <= buzzer_GetBuzzerTime())) {
     buzzer_Stop();
   }
+  */
 }
 
 // 縄が真下に来る時刻が算出された際に呼び出される
