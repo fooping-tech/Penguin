@@ -3,7 +3,7 @@
 
 //■■■ ペンギンジャンプ設定 ■■■//
 // 縄が真下に来るどれぐらい前にジャンプを始めるか[msec]
-const unsigned long PenginJump_JUMP_START_TIME = 230;//230ms
+const unsigned long PenginJump_JUMP_START_TIME = 230;
 //光センサ検出後 ボトム予測時間(初回)[us]
 const unsigned long peSensor_CALC_WAITTIME =410000;
 //光センサ検出後 ボトム予測時間(2回以降)[us]
@@ -15,10 +15,10 @@ const int PenginJump_FORWARD_SLOW = 100;
 const int PenginJump_BACKWARD_SLOW = -100;
 
 // ジャンプ上端まで登る際の出力値[%] （上げすぎるとギア外れて落下中にぶつかるリスク。下げすぎると登れない）
-const int PenginJump_JUMPING_RISE = 85;
+const int PenginJump_JUMPING_RISE = 75;
 
 // ギア噛み外れ直前上端まで登る際の出力値[%]
-const int PenginJump_JUMPING_RISE_SLOW = 80;
+const int PenginJump_JUMPING_RISE_SLOW = 70;
 
 // 着地後安定待ち時間[ms]
 const int PenginJump_LANDING_TIME = 150;
@@ -46,7 +46,7 @@ const int PenginJump_JUMP_READY_DUTY2 =10;
 const int PenginJump_JUMP_READY_DUTY3 =50;
 
 //Startボタン押した後の動遷移待ち時間[ms]
-const int PenginJump_READY_TIME = 3000;
+const int PenginJump_READY_TIME = 0;
 
 
 //■■■ 光電センサ設定値 ■■■//
@@ -94,6 +94,11 @@ const int button_BACKWARD_PIN = 15;
 // 端子設定
 //const int buzzer_PIN = 2;
 const int buzzer_PIN = 10; // 高速カメラ用LED出力時
+
+//■■■ デバッグ用ブザー設定値 ■■■//
+// 端子設定
+const int switch_PIN = 8; // スイッチピン
+
 
 //■■■ ギア位置検出用ポテンショメータ 設定値 ■■■//
 // 端子設定

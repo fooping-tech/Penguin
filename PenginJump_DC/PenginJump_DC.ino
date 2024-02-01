@@ -87,6 +87,9 @@ void setup() {
   // ボタン初期化
   button_Setup();
 
+  // スイッチ初期化
+  switch_Setup();
+
 #if ACCEL_SENSOR != NO_ACCEL_SENSOR
   accelSensor_Setup();
 #endif
@@ -157,10 +160,16 @@ void loop() {
       //Serial.println(gearPosition_GetPosition());
     } else {
       speedController_Stop();
-      // StartStopボタン押下時は時間待ち状態へ遷移
-      if (button_StartStop()) {
-        gearPosition_Setup();
-        PenginJump_SetState(STATE_READY);
+      
+      if(switch_Read()){
+          gearPosition_Setup();
+          PenginJump_SetState(STATE_READY);
+      }else{
+        // StartStopボタン押下時は時間待ち状態へ遷移
+        if (button_StartStop()) {
+          gearPosition_Setup();
+          PenginJump_SetState(STATE_READY);
+        }
       }
     }
   }
