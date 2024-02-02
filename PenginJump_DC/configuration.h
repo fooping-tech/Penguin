@@ -15,10 +15,10 @@ const int PenginJump_FORWARD_SLOW = 100;
 const int PenginJump_BACKWARD_SLOW = -100;
 
 // ジャンプ上端まで登る際の出力値[%] （上げすぎるとギア外れて落下中にぶつかるリスク。下げすぎると登れない）
-const int PenginJump_JUMPING_RISE = 75;
+const int PenginJump_JUMPING_RISE = 85;
 
 // ギア噛み外れ直前上端まで登る際の出力値[%]
-const int PenginJump_JUMPING_RISE_SLOW = 70;
+const int PenginJump_JUMPING_RISE_SLOW = 80;
 
 // 着地後安定待ち時間[ms]
 const int PenginJump_LANDING_TIME = 150;
